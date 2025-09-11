@@ -1,0 +1,16 @@
+services:
+  grafana:
+    image: grafana/otel-lgtm:0.11.5
+    #mage: grafana/otel-lgtm:0.10.1
+    ports: 
+      - 3000:3000
+      - 4317:4317
+      - 4318:4318
+    volumes:
+      - /home/smendesp/Dev/RUM/docker/volumes/grafana:/data
+      - /home/smendesp/Dev/RUM/docker/volumes/otel-lgtm:/otel-lgtm
+
+networks:
+  default:
+    name: rum-local-network
+    #external: true

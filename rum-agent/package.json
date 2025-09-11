@@ -1,0 +1,25 @@
+{
+  "name": "@meu-org/rum-package",
+  "version": "1.0.0",
+  "description": "Real User Monitoring package for web applications",
+  "main": "dist/rum-bundle.js",
+  "types": "dist/types/index.d.ts",
+  "scripts": {
+    "build": "webpack && tsc --emitDeclarationOnly --outDir dist/types",
+    "dev": "webpack --mode development --watch"
+  },
+  "keywords": [
+    "rum",
+    "monitoring",
+    "analytics",
+    "performance"
+  ],
+  "author": "Seu Nome",
+  "license": "MIT",
+  "devDependencies": {
+    "ts-loader": "^9.4.0",
+    "typescript": "^4.9.0",
+    "webpack": "^5.101.3",
+    "webpack-cli": "^5.1.4"
+  }
+}
