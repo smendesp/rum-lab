@@ -16,11 +16,11 @@ async def node_graph():
             'id': 'edge1',
             'source': 'node1',
             'target': 'node2',
-            'mainstat': 'TheMain',
+            'mainstat': 'Principal',
             'secondarysta': 'TheSub',
             'thickness': 3,
             'highlighted':True,
-            'color': 'cyan'
+            'color': 'yellow'
         },
         {
             'id': 'edge2',
