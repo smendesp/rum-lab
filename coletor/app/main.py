@@ -5,7 +5,7 @@ import time
 
 from app.lib.logger import Logger
 from app.services.utils import Utils
-from app.routes import health, rum, node_graph
+from app.routes import main, health, rum, node_graph
 
 # from app.lib.metrics import Metrics
 
@@ -40,6 +40,7 @@ app.add_middleware(
 )
 
 # Carregar Rotas
+app.include_router(main.router)
 app.include_router(health.router)
 app.include_router(rum.router)
 app.include_router(node_graph.router)

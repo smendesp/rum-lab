@@ -1,5 +1,5 @@
 {
-  "name": "@meu-org/rum-package",
+  "name": "@smendesp/rum-package",
   "version": "1.0.0",
   "description": "Real User Monitoring package for web applications",
   "main": "dist/rum-bundle.js",
@@ -14,7 +14,7 @@
     "analytics",
     "performance"
   ],
-  "author": "Seu Nome",
+  "author": "Silvio Mendes Pedrosa",
   "license": "MIT",
   "devDependencies": {
     "ts-loader": "^9.4.0",
