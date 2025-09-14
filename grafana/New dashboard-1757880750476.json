@@ -1,0 +1,119 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 4,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "eey2hx8ako2rkd"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "edges": {},
+        "layoutAlgorithm": "layered",
+        "nodes": {},
+        "zoomMode": "cooperative"
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "eey2hx8ako2rkd"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.*.id"
+            },
+            {
+              "jsonPath": "$.*.source",
+              "language": "jsonpath",
+              "name": ""
+            },
+            {
+              "jsonPath": "$.*.target",
+              "language": "jsonpath",
+              "name": ""
+            },
+            {
+              "jsonPath": "$.*.mainstat",
+              "language": "jsonpath",
+              "name": ""
+            },
+            {
+              "jsonPath": "$.*.secondarysta",
+              "language": "jsonpath",
+              "name": ""
+            },
+            {
+              "jsonPath": "$.*.thickness",
+              "language": "jsonpath",
+              "name": ""
+            },
+            {
+              "jsonPath": "$.*.highlighted",
+              "language": "jsonpath",
+              "name": ""
+            },
+            {
+              "jsonPath": "$.*.highlighted",
+              "language": "jsonpath",
+              "name": ""
+            }
+          ],
+          "method": "GET",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/node-graph"
+        }
+      ],
+      "title": "New panel",
+      "type": "nodeGraph"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "New dashboard",
+  "uid": "ed7ddda4-1432-49be-b2cf-a20fd524c6e3",
+  "version": 2
+}

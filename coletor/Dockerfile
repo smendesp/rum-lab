@@ -20,16 +20,17 @@ RUN uv sync --frozen --no-install-project --no-dev
 
 COPY ./app /app
 
-#RUN --mount=type=cache,target=/root/.cache/uv
-#RUN uv sync --frozen --no-dev
+# RUN --mount=type=cache,target=/root/.cache/uv
+# RUN uv sync --frozen --no-dev
 
-RUN rm -f ./uv.lock
+#RUN rm -f ./uv.lock
 
 FROM base
 
 WORKDIR /app
 
 COPY --from=builder /app /tmp/app
+# COPY --from=builder /bin/uv /bin/uv
 
 RUN cp -rd /tmp/app/.venv /app/.venv
 
@@ -40,10 +41,12 @@ RUN mkdir app
 RUN cp -rd /tmp/app ./
 
 RUN mv ./app/pyproject.toml ./
-
+# RUN mv ./app/uv.lock ./
 RUN mv ./app/uvicorn_start.sh ./
 
 RUN rm -rf /tmp/app
+
+RUN python3 -m ensurepip
 
 RUN opentelemetry-bootstrap -a install
 
@@ -55,5 +58,6 @@ ENV WORKERS="4"
 
 #uv run opentelemetry-instrument uvicorn app.main:app
 #CMD ["opentelemetry-instrument", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "$WORKERS"]
+
 CMD ["sh", "./uvicorn_start.sh"]
 #CMD ["sleep", "infinity"]
