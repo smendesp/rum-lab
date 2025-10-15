@@ -10,8 +10,8 @@ router = APIRouter()
 # node graph
 @router.get('/node-graph')
 async def node_graph():
-    
-    graph : list = [
+
+    graph: list = [
         {
             'id': 'edge1',
             'source': 'node1',
@@ -19,8 +19,8 @@ async def node_graph():
             'mainstat': 'Principal',
             'secondarysta': 'TheSub',
             'thickness': 3,
-            'highlighted':True,
-            'color': 'yellow'
+            'highlighted': True,
+            'color': 'yellow',
         },
         {
             'id': 'edge2',
@@ -29,10 +29,9 @@ async def node_graph():
             'mainstat': 'Main2',
             'secondarysta': 'Sub2',
             'thickness': 1,
-            'highlighted':False,
-            'color': 'orange'
-        }
-        
+            'highlighted': False,
+            'color': 'orange',
+        },
     ]
-    
+
     return generate_json_response(response_data={'data': graph})

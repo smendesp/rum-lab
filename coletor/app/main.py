@@ -45,6 +45,7 @@ app.include_router(health.router)
 app.include_router(rum.router)
 app.include_router(node_graph.router)
 
+
 # Eventos
 @app.on_event('startup')
 async def startup_event():

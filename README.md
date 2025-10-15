@@ -42,3 +42,9 @@ echo "18.17.0" > .nvmrc
 # Usar a versão do .nvmrc
 nvm use
 
+#### get token influxdb3
+
+influxdb3 create token --admin
+
+#### Criar database usando o CLI
+nfluxdb3 create database <database> --token <token>

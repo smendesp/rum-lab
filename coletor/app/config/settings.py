@@ -21,6 +21,11 @@ class Settings(BaseSettings):
     # Segurança
     DB_DEFAULT_FORMAT_DATE: str
 
+    # InfluxDB
+    INFLUXDB_URL: str
+    INFLUXDB_DATABASE: str
+    INFLUXDB_TOKEN: str
+    
     # Open Telemetry
     # OTEL_SERVICE_NAME: str
     # OTEL_EXPORTER_OTLP_PROTOCOL: str

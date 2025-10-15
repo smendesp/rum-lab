@@ -57,6 +57,58 @@ services:
     image: kelly:latest
     ports: 
       - 9081:80
+  
+  influxdb-ui:
+    image: influxdata/influxdb3-ui:1.2.1
+    hostname: influxdb-ui
+    ports:
+      - 8888:80
+      - 8889:8888
+    environment:
+      - INFLUXDB_UI_LOG_LEVEL=info
+      #- INFLUXDB_UI_BIND_ADDRESS=:8888
+      - INFLUXDB_UI_INFLUXDB_URL=http://influxdb3:8181
+      - INFLUXDB_UI_INFLUXDB_TOKEN=smendesp:campos
+      - INFLUXDB_UI_INFLUXDB_ORG=rum-org
+      #- INFLUXDB_UI_INFLUXDB_BUCKET=my-bucket
+    depends_on:
+      - influxdb3
+
+  influxdb3:
+    image: influxdb:3-core
+    hostname: influxdb3
+    ports:
+      - 8181:8181
+    command:
+      - influxdb3
+      - serve
+      - --node-id=node0
+      - --object-store=file
+      - --data-dir=/var/lib/influxdb3/data
+      - --plugin-dir=/var/lib/influxdb3/plugins
+    environment:
+      - INFLUXD_HTTP_BIND_ADDRESS=:8181
+      - INFLUXD_LOG_LEVEL=info
+      - INFLUXD_STORAGE_ENGINE=tsm1
+      - INFLUXD_DATA_QUERY_LOG_ENABLED=true
+      - INFLUXD_DATA_QUERY_LOG_FILE_ENABLED=true
+      - INFLUXD_DATA_QUERY_LOG_FILE_PATH=/var/lib/influxdb3/data/query.log
+      - INFLUXD_DATA_QUERY_LOG_FILE_ROTATION_SIZE=104857600
+      - INFLUXD_DATA_QUERY_LOG_FILE_ROTATION_COUNT=10
+      - INFLUXD_DATA_RETENTION_CHECK_ENABLED=true
+      - INFLUXD_DATA_RETENTION_CHECK_PERIOD=30m
+      - INFLUXD_HTTP_FLUX_ENABLED=true
+      - INFLUXD_HTTP_AUTH_ENABLED=false
+      - INFLUXD_HTTP_PPROF_ENABLED=false
+      - INFLUXD_HTTP_PPROF_BIND_ADDRESS=:6060
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=smendesp
+      - DOCKER_INFLUXDB_INIT_PASSWORD=campos
+      - DOCKER_INFLUXDB_INIT_ORG=rum-org
+      #- DOCKER_INFLUXDB_INIT_BUCKET=my-bucket
+    # volumes:
+    #   - /home/smendesp/Dev/RUM/docker/vol/influxdb/data:/var/lib/influxdb3/data
+    #   - /home/smendesp/Dev/RUM/docker/vol/influxdb/plugins:/var/lib/influxdb3/plugins
 
 networks:
   default:
