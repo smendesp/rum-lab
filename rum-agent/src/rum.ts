@@ -1,4 +1,6 @@
-import { RUMConfig, RUMEvent, RUMClickEvent, RUMErrorEvent, RUMResourceEvent, RUMPerformanceEvent } from './types';
+
+import { onCLS, onINP, onLCP, onFCP, onTTFB } from 'web-vitals';
+import { RUMConfig, RUMEvent, RUMClickEvent, RUMErrorEvent, RUMResourceEvent, RUMPerformanceEvent, RUMWebVitalsEvent } from './types';
 
 class RealUserMonitoring {
   private config: Required<RUMConfig>;
@@ -17,7 +19,9 @@ class RealUserMonitoring {
       trackErrors: true,
       trackResources: true,
       trackPerformance: true,
+      trackWebVitals: true,
       elementList: ['BUTTON', 'A', 'INPUT', 'SELECT', 'TEXTAREA', 'I'],
+      ignoreResourceList: 'rum-agent|rum|favicon',
       ...config
     };
 
@@ -25,6 +29,13 @@ class RealUserMonitoring {
     this.userId = this.getOrCreateUserId();
     this.initialize();
   }
+
+private resourceToIgnore(input: string): boolean {
+    if(input.match(new RegExp(this.config.ignoreResourceList, 'gi'))){
+        return true;
+    }
+    return false;
+}
 
   private generateSessionId(): string {
     return Math.random().toString(36).substring(2) + Date.now().toString(36);
@@ -45,21 +56,44 @@ class RealUserMonitoring {
     }
 
     this.setupSessionTracking();
-    
+
     if (this.config.trackClicks) {
       this.setupClickTracking();
     }
-    
+
     if (this.config.trackErrors) {
       this.setupErrorTracking();
     }
-    
+
     if (this.config.trackResources) {
       this.setupResourceTracking();
     }
-    
+
     if (this.config.trackPerformance) {
       this.setupPerformanceTracking();
+    }
+
+    if (this.config.trackWebVitals) {
+
+      onCLS((metric) => {
+        this.setupWebVitals(metric);
+      });
+
+      onINP((metric) => {
+        this.setupWebVitals(metric);
+      });
+
+      onLCP((metric) => {
+        this.setupWebVitals(metric);
+      });
+
+      onFCP((metric) => {
+        this.setupWebVitals(metric);
+      });
+
+      onTTFB((metric) => {
+        this.setupWebVitals(metric);
+      });
     }
 
     this.setupBeforeUnload()
@@ -76,18 +110,37 @@ class RealUserMonitoring {
 
 
   private setupBeforeUnload(): void {
-    document.addEventListener("beforeunload", () => { 
+    document.addEventListener("beforeunload", () => {
       this.flushQueue()
     })
 
-}
+  }
+
+  private setupWebVitals(metric: any): void {
+    const webVitalsEvent: RUMWebVitalsEvent = {
+      appKey: this.config.appKey,
+      type: 'web-vitals',
+      timestamp: Date.now(),
+      sessionId: this.sessionId,
+      userId: this.userId,
+      pageUrl: window.location.href,
+      userAgent: navigator.userAgent,
+      data: {
+        id: metric.id,
+        name: metric.name,
+        value: metric.value
+      }
+    };
+    this.queueEvent(webVitalsEvent);
+  }
+
 
   private setupClickTracking(): void {
     document.addEventListener('click', (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       const elementList = this.config.elementList //['BUTTON', 'A', 'INPUT', 'SELECT', 'TEXTAREA', 'I'];
-      
-      if (elementList.includes(target.tagName)){
+
+      if (elementList.includes(target.tagName)) {
         const clickEvent: RUMClickEvent = {
           appKey: this.config.appKey,
           type: 'click',
@@ -110,7 +163,6 @@ class RealUserMonitoring {
   }
 
   private setupErrorTracking(): void {
-    // Captura erros globais
     window.addEventListener('error', (event: ErrorEvent) => {
       const errorEvent: RUMErrorEvent = {
         appKey: this.config.appKey,
@@ -154,55 +206,66 @@ class RealUserMonitoring {
 
   private setupResourceTracking(): void {
     const originalFetch = window.fetch;
-    
+
     // Monitora fetch requests
     window.fetch = async (...args) => {
       const startTime = performance.now();
       const resourceName = typeof args[0] === 'string' ? args[0] : 'unknown';
-      
+      console.log('Fetch Resource Initiated:', resourceName, this.resourceToIgnore(resourceName));
       try {
         const response = await originalFetch(...args);
-        const duration = performance.now() - startTime;
 
-        const resourceEvenResourceEvent: RUMResourceEvent = {
-          appKey: this.config.appKey,
-          type: 'resource',
-          timestamp: Date.now(),
-          sessionId: this.sessionId,
-          userId: this.userId,
-          pageUrl: window.location.href,
-          userAgent: navigator.userAgent,
-          data: {
-            name: resourceName,
-            type: 'fetch',
-            duration: Math.round(duration),
-            success: response.ok,
-            size: parseInt(response.headers.get('content-length') || '0')
-          }
-        };
+        if (!this.resourceToIgnore(resourceName)) {
 
-        this.queueEvent(resourceEvenResourceEvent);
+          console.log('Tracking Resource Success:', resourceName);
+
+          const duration = performance.now() - startTime;
+          const resourceEvenResourceEvent: RUMResourceEvent = {
+            appKey: this.config.appKey,
+            type: 'resource',
+            timestamp: Date.now(),
+            sessionId: this.sessionId,
+            userId: this.userId,
+            pageUrl: window.location.href,
+            userAgent: navigator.userAgent,
+            data: {
+              name: resourceName,
+              type: 'fetch',
+              duration: Math.round(duration),
+              success: response.ok,
+              size: parseInt(response.headers.get('content-length') || '0')
+            }
+          };
+
+          this.queueEvent(resourceEvenResourceEvent);
+        }
         return response;
-      } catch (error) {
-        const duration = performance.now() - startTime;
         
-        const resourceEvenResourceEvent: RUMResourceEvent = {
-          appKey: this.config.appKey,
-          type: 'resource',
-          timestamp: Date.now(),
-          sessionId: this.sessionId,
-          userId: this.userId,
-          pageUrl: window.location.href,
-          userAgent: navigator.userAgent,
-          data: {
-            name: resourceName,
-            type: 'fetch',
-            duration: Math.round(duration),
-            success: false
-          }
-        };
+      } catch (error) {
 
-        this.queueEvent(resourceEvenResourceEvent);
+        if (!this.resourceToIgnore(resourceName)) {
+
+          console.log('Tracking Resource Error:', resourceName);
+
+          const duration = performance.now() - startTime;
+          const resourceEvenResourceEvent: RUMResourceEvent = {
+            appKey: this.config.appKey,
+            type: 'resource',
+            timestamp: Date.now(),
+            sessionId: this.sessionId,
+            userId: this.userId,
+            pageUrl: window.location.href,
+            userAgent: navigator.userAgent,
+            data: {
+              name: resourceName,
+              type: 'fetch',
+              duration: Math.round(duration),
+              success: false
+            }
+          };
+
+          this.queueEvent(resourceEvenResourceEvent);
+        }
         throw error;
       }
     };
@@ -212,25 +275,27 @@ class RealUserMonitoring {
       list.getEntries().forEach((entry) => {
         if (entry.entryType === 'resource') {
           const resourceEntry = entry as PerformanceResourceTiming;
-          
-          const resourceEvent: RUMResourceEvent = {
-            appKey: this.config.appKey,
-            type: 'resource',
-            timestamp: Date.now(),
-            sessionId: this.sessionId,
-            userId: this.userId,
-            pageUrl: window.location.href,
-            userAgent: navigator.userAgent,
-            data: {
-              name: resourceEntry.name,
-              type: resourceEntry.initiatorType,
-              duration: Math.round(resourceEntry.duration),
-              success: resourceEntry.transferSize > 0,
-              size: resourceEntry.transferSize
-            }
-          };
 
-          this.queueEvent(resourceEvent);
+          if (!this.resourceToIgnore(resourceEntry.name)) {
+            const resourceEvent: RUMResourceEvent = {
+              appKey: this.config.appKey,
+              type: 'resource',
+              timestamp: Date.now(),
+              sessionId: this.sessionId,
+              userId: this.userId,
+              pageUrl: window.location.href,
+              userAgent: navigator.userAgent,
+              data: {
+                name: resourceEntry.name,
+                type: resourceEntry.initiatorType,
+                duration: Math.round(resourceEntry.duration),
+                success: resourceEntry.transferSize > 0,
+                size: resourceEntry.transferSize
+              }
+            };
+
+            this.queueEvent(resourceEvent);
+          }
         }
       });
     });
@@ -243,7 +308,7 @@ class RealUserMonitoring {
       setTimeout(() => {
         const perfData = performance.timing;
         const paintEntries = performance.getEntriesByType('paint');
-        
+
         const firstPaint = paintEntries.find(entry => entry.name === 'first-paint');
         const firstContentfulPaint = paintEntries.find(entry => entry.name === 'first-contentful-paint');
 

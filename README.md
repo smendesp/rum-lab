@@ -48,3 +48,8 @@ influxdb3 create token --admin
 
 #### Criar database usando o CLI
 nfluxdb3 create database <database> --token <token>
+
+#### Links
+
+https://page-speed.dev/www.google.com
+https://github.com/danielroe/page-speed.dev

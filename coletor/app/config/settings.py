@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     INFLUXDB_URL: str
     INFLUXDB_DATABASE: str
     INFLUXDB_TOKEN: str
-    
+
     # Open Telemetry
     # OTEL_SERVICE_NAME: str
     # OTEL_EXPORTER_OTLP_PROTOCOL: str

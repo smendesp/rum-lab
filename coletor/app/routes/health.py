@@ -8,6 +8,6 @@ router = APIRouter()
 
 
 # health
-@router.get('/')
-async def main():
+@router.get('/health')
+async def health():
     return generate_json_response(response_data={'data': {'health': 'OK'}})

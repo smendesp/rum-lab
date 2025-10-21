@@ -21,5 +21,9 @@
     "typescript": "^4.9.0",
     "webpack": "^5.101.3",
     "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "esbuild": "^0.25.11",
+    "web-vitals": "^5.1.0"
   }
 }

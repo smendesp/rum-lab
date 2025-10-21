@@ -42,11 +42,13 @@
       sampleRate: 1.0, // 100% dos usuários
       trackClicks: true,
       trackErrors: true,
-      trackResources: false,
+      trackResources: true,
       trackPerformance: true,
+      trackWebVitals: true,      
       elementList: ["BUTTON", "A", "SELECT", "TEXTAREA", "I"],
       maxQueueSize: 10,
       maxQueueTime: 10000,
+      ignoreResourceList: 'rum-agent|rum|favicon',    
     };
   </script>
   <!-- <script src="../agent/dist/index.js"></script> -->

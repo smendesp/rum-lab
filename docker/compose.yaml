@@ -28,10 +28,15 @@ services:
     environment:
       - ENVIRONMENT=prd
       - DEBUG=False
-      - DATABASE_URL=postgresql+psycopg2://postgres:postgres@192.168.68.111:5432/cys_core
+      - DATABASE_URL=postgresql+psycopg2://postgres:postgres@192.168.68.114:5432/cys_core
       - SECRET_KEY=your-production-secret-key 
       - DB_DEFAULT_FORMAT_DATE=%Y-%m-%d %H:%M:%S 
       - WORKERS=1
+
+
+      - INFLUXDB_URL=http://192.168.68.114:8181
+      - INFLUXDB_DATABASE=_internal
+      - INFLUXDB_TOKEN=apiv3_ycTA5tXFXZBpqjJFzqInhF3FgAj49Ag_HblCuX90R-5s1HPUTyNu1_wf1UNbhI_iSwIOXf_hi0OQx5lRNaaHCg
 
       - OTEL_SERVICE_NAME=auth-client
       - OTEL_EXPORTER_OTLP_PROTOCOL=grpc

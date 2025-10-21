@@ -9,7 +9,9 @@ export interface RUMConfig {
   trackErrors?: boolean;
   trackResources?: boolean;
   trackPerformance?: boolean;
+  trackWebVitals?: boolean;
   elementList?:string[];
+  ignoreResourceList?:string
 }
 
 export interface RUMEvent {
@@ -21,6 +23,15 @@ export interface RUMEvent {
   data: any;
   pageUrl: string;
   userAgent: string;
+}
+
+export interface RUMWebVitalsEvent extends RUMEvent {
+  type: 'web-vitals';
+  data: {
+    id: string;
+    name: string;
+    value: number;
+  };
 }
 
 export interface RUMClickEvent extends RUMEvent {
