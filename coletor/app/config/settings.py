@@ -21,6 +21,9 @@ class Settings(BaseSettings):
     # Segurança
     DB_DEFAULT_FORMAT_DATE: str
 
+    # TIME SERIES TIMESTAMP
+    TS_ORIGIN: str   # COLETOR|AGENTE|DATABASE
+
     # InfluxDB
     INFLUXDB_URL: str
     INFLUXDB_DATABASE: str

@@ -1,3 +1,1 @@
-from sqlalchemy.orm import DeclarativeBase
-
-from app.models.entities.cys_core import UserAccount, Address, Base
+from app.models.entities.app_key import AppKeyEntity

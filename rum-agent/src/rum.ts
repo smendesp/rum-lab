@@ -211,7 +211,6 @@ private resourceToIgnore(input: string): boolean {
     window.fetch = async (...args) => {
       const startTime = performance.now();
       const resourceName = typeof args[0] === 'string' ? args[0] : 'unknown';
-      console.log('Fetch Resource Initiated:', resourceName, this.resourceToIgnore(resourceName));
       try {
         const response = await originalFetch(...args);
 
@@ -244,9 +243,6 @@ private resourceToIgnore(input: string): boolean {
       } catch (error) {
 
         if (!this.resourceToIgnore(resourceName)) {
-
-          console.log('Tracking Resource Error:', resourceName);
-
           const duration = performance.now() - startTime;
           const resourceEvenResourceEvent: RUMResourceEvent = {
             appKey: this.config.appKey,

@@ -12,10 +12,10 @@ class RumClickEventData(BaseModel):
 
     def to_dict(self) -> dict:
         return {
-            'click_x': self.x,
-            'click_y': self.y,
-            'click_element': self.element,
-            'click_text': self.text,
+            'x': self.x,
+            'y': self.y,
+            'element': self.element,
+            'text': self.text,
         }
 
 
@@ -32,8 +32,8 @@ class RumClickEvent(RumEvent):
             'user_id': self.user_id,
             'page_url': self.page_url,
             'user_agent': self.user_agent,
-            'click_x': self.data.x,
-            'click_y': self.data.y,
-            'click_element': self.data.element,
-            'click_text': self.data.text,
+            'x': self.data.x,
+            'y': self.data.y,
+            'element': self.data.element,
+            'text': self.data.text,
         }

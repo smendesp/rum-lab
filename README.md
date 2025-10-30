@@ -46,6 +46,11 @@ nvm use
 
 influxdb3 create token --admin
 
+influxdb3 create token --admin --regenerate 
+
+
+Bearer apiv3_tTs0gaStoeMCBm_R1JuvAXYglv3k-LpNeF5CaTSRKWWnZIMlZThADb5n2HxvJQE5H9ijcsVIoHbtRUvqKvGCAA
+
 #### Criar database usando o CLI
 nfluxdb3 create database <database> --token <token>
 
@@ -53,3 +58,17 @@ nfluxdb3 create database <database> --token <token>
 
 https://page-speed.dev/www.google.com
 https://github.com/danielroe/page-speed.dev
+
+
+#### QUERIES
+
+```SQL
+
+  select page_url, count(time) as total from 'click_event' WHERE time >= now() - interval '5 minutes'  GROUP by page_url order by total desc
+
+
+  select page_url, click_text, count(time) as total from 'click_event' WHERE time >= now() - interval '5 minutes'  GROUP by page_url, click_text order by total desc
+
+   SELECT distinct page_url, name, count FROM web_vitals WHERE time >= now() - interval '5 minutes' order by  page_url, name
+
+```

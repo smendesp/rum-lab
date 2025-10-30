@@ -13,11 +13,11 @@ class RumErrorEventData(BaseModel):
 
     def to_dict(self) -> dict:
         return {
-            'error_message': self.error_message,
-            'error_stack': self.error_stack,
-            'error_filename': self.error_filename,
-            'error_lineno': self.error_lineno,
-            'error_colno': self.error_colno,
+            'message': self.error_message,
+            'stack': self.error_stack,
+            'filename': self.error_filename,
+            'lineno': self.error_lineno,
+            'colno': self.error_colno,
         }
 
 
@@ -34,9 +34,9 @@ class RumErrorEvent(RumEvent):
             'user_id': self.user_id,
             'page_url': self.page_url,
             'user_agent': self.user_agent,
-            'error_message': self.data.error_message,
-            'error_stack': self.error_stack,
-            'error_filename': self.data.error_filename,
-            'error_lineno': self.data.error_lineno,
-            'error_colno': self.data.error_colno,
+            'message': self.data.message,
+            'stack': self.stack,
+            'filename': self.data.filename,
+            'lineno': self.data.lineno,
+            'colno': self.data.colno,
         }

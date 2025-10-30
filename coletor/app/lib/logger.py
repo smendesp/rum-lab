@@ -33,7 +33,7 @@ class Logger:
                 'uvicorn.error': {
                     'level': self._level,
                     'handlers': ['default'],
-                    'propagate': False,
+                    #'propagate': False,
                 },
                 'uvicorn.access': {
                     'level': self._level,

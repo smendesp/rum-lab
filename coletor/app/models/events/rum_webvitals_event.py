@@ -14,7 +14,7 @@ class RumWebVitalsEventData(BaseModel):
 
 
 class RumWebVitalsEvent(RumEvent):
-    type: str = Field(default='web-vitals', description='Event Type')
+    type: str = Field(default='web_vitals', description='Event Type')
     data: RumWebVitalsEventData = Field()
 
     def to_dict(self) -> dict:
