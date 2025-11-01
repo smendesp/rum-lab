@@ -1,31 +1,32 @@
 from influxdb_client_3 import Point
 import pandas as pd
 
-
 from app.services.time_series.time_series import TimeSeries
-from datetime import datetime, timezone
+from app.lib.utils import Utils
 
 
 class Variables(TimeSeries):
     def __init__(self):
         super().__init__()
 
-    def prepare_df(self, data_list: list):
 
+    def prepare_df(self, data_frame):
         data = {
-            'event_type': [data['event_type'] for data in data_list],
-            'session_id': [data['session_id'] for data in data_list],
-            'user_id': [data['user_id'] for data in data_list],
-            'page_url': [data['page_url'] for data in data_list],
-            'user_agent': [data['user_agent'] for data in data_list],
-            'element': [data['element'] for data in data_list],
-            'text': [data['text'] for data in data_list],
-            'time': (datetime.now(timezone.utc)),
+            'event_type': data_frame['event_type'],
+            'session_id': data_frame['session_id'],
+            'user_id': data_frame['user_id'],
+            'page_url': data_frame['page_url'],
+            'user_agent': data_frame['user_agent'],
+            'element': data_frame['element'],
+            'text': data_frame['text'],
+            'time': data_frame['time'],
         }
+
 
         df = pd.DataFrame(data)
 
         return df
+
 
     def set_data(self, data_list: list):
         fields = [
@@ -46,7 +47,6 @@ class Variables(TimeSeries):
                 data_frame_measurement_name='variables',
                 data_frame_field_columns=fields,
                 data_frame_timestamp_column='time',
-                # data_frame_timestamp_timezone='UTC',  # Timezone
                 write_precision='s',  # Precisão: 'ns', 'us', 'ms', 's'
             )
 

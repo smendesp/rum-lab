@@ -1,9 +1,9 @@
 from influxdb_client_3 import Point
 import pandas as pd
-from datetime import datetime, timezone
 
 from app.services.time_series.time_series import TimeSeries
 from app.services.time_series.variables import Variables
+from app.lib.utils import Utils
 
 
 class ClickEvent(TimeSeries):
@@ -11,6 +11,7 @@ class ClickEvent(TimeSeries):
         super().__init__()
 
     def set_events(self, events: list):
+        utils = Utils()
         variables = Variables()
         data_points: list = []
         # variables_data: list = []
@@ -42,7 +43,7 @@ class ClickEvent(TimeSeries):
             'text': [data['text'] for data in events],
             'x': [data['x'] for data in events],
             'y': [data['y'] for data in events],
-            'time': [datetime.now(timezone.utc) for data in events],
+            'time': [utils.get_timestamp(data['timestamp']) for data in events],
         }
 
         data_field = {
@@ -73,15 +74,9 @@ class ClickEvent(TimeSeries):
         # A value is trying to be set on a copy of a slice from a DataFrame.
         # Try using .loc[row_indexer,col_indexer] = value instead
         # See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-        # df['count'] = pd.to_numeric(df['count'], downcast='integer')
-
-        # df['count'] = pd.to_numeric(df['count'], downcast='integer')
-        df['count'] = df['count'].astype(int)
-        # print(df.loc[['count']])
-        #df.loc[:, 'count'] = df.loc[:, 'count'].astype(int)
-
-        print(df_merged.head())
         
+        df['count'] = pd.to_numeric(df['count'], downcast='integer')
+
         try:
             self.timeseries.write(
                 record=df,
@@ -89,11 +84,10 @@ class ClickEvent(TimeSeries):
                 data_frame_tag_columns=fields_tags,
                 data_frame_field_columns=['count'],
                 data_frame_timestamp_column='time',
-                # data_frame_timestamp_timezone='UTC',  # Timezone
                 write_precision='ms',  # Precisão: 'ns', 'us', 'ms', 's'
             )
 
-            variables.set_data(events)
+            variables.set_data(df)
 
             self.log.logger.info(
                 f'Successfully wrote {len(data_points)} without error events to time series database.'
