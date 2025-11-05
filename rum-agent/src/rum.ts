@@ -30,12 +30,16 @@ class RealUserMonitoring {
     this.initialize();
   }
 
-private resourceToIgnore(input: string): boolean {
-    if(input.match(new RegExp(this.config.ignoreResourceList, 'gi'))){
-        return true;
+  private getTimeStamp(): number {
+    return Math.floor(Date.now() / 1000);
+  }
+
+  private resourceToIgnore(input: string): boolean {
+    if (input.match(new RegExp(this.config.ignoreResourceList, 'gi'))) {
+      return true;
     }
     return false;
-}
+  }
 
   private generateSessionId(): string {
     return Math.random().toString(36).substring(2) + Date.now().toString(36);
@@ -120,7 +124,7 @@ private resourceToIgnore(input: string): boolean {
     const webVitalsEvent: RUMWebVitalsEvent = {
       appKey: this.config.appKey,
       type: 'web-vitals',
-      timestamp: Date.now(),
+      timestamp: this.getTimeStamp(),
       sessionId: this.sessionId,
       userId: this.userId,
       pageUrl: window.location.href,
@@ -144,7 +148,7 @@ private resourceToIgnore(input: string): boolean {
         const clickEvent: RUMClickEvent = {
           appKey: this.config.appKey,
           type: 'click',
-          timestamp: Date.now(),
+          timestamp: this.getTimeStamp(),
           sessionId: this.sessionId,
           userId: this.userId,
           pageUrl: window.location.href,
@@ -167,7 +171,7 @@ private resourceToIgnore(input: string): boolean {
       const errorEvent: RUMErrorEvent = {
         appKey: this.config.appKey,
         type: 'error',
-        timestamp: Date.now(),
+        timestamp: this.getTimeStamp(),
         sessionId: this.sessionId,
         userId: this.userId,
         pageUrl: window.location.href,
@@ -189,7 +193,7 @@ private resourceToIgnore(input: string): boolean {
       const errorEvent: RUMErrorEvent = {
         appKey: this.config.appKey,
         type: 'error',
-        timestamp: Date.now(),
+        timestamp: this.getTimeStamp(),
         sessionId: this.sessionId,
         userId: this.userId,
         pageUrl: window.location.href,
@@ -222,7 +226,7 @@ private resourceToIgnore(input: string): boolean {
           const resourceEvenResourceEvent: RUMResourceEvent = {
             appKey: this.config.appKey,
             type: 'resource',
-            timestamp: Date.now(),
+            timestamp: this.getTimeStamp(),
             sessionId: this.sessionId,
             userId: this.userId,
             pageUrl: window.location.href,
@@ -239,7 +243,7 @@ private resourceToIgnore(input: string): boolean {
           this.queueEvent(resourceEvenResourceEvent);
         }
         return response;
-        
+
       } catch (error) {
 
         if (!this.resourceToIgnore(resourceName)) {
@@ -247,7 +251,7 @@ private resourceToIgnore(input: string): boolean {
           const resourceEvenResourceEvent: RUMResourceEvent = {
             appKey: this.config.appKey,
             type: 'resource',
-            timestamp: Date.now(),
+            timestamp: this.getTimeStamp(),
             sessionId: this.sessionId,
             userId: this.userId,
             pageUrl: window.location.href,
@@ -276,7 +280,7 @@ private resourceToIgnore(input: string): boolean {
             const resourceEvent: RUMResourceEvent = {
               appKey: this.config.appKey,
               type: 'resource',
-              timestamp: Date.now(),
+              timestamp: this.getTimeStamp(),
               sessionId: this.sessionId,
               userId: this.userId,
               pageUrl: window.location.href,
@@ -311,7 +315,7 @@ private resourceToIgnore(input: string): boolean {
         const performanceEvent: RUMPerformanceEvent = {
           appKey: this.config.appKey,
           type: 'performance',
-          timestamp: Date.now(),
+          timestamp: this.getTimeStamp(),
           sessionId: this.sessionId,
           userId: this.userId,
           pageUrl: window.location.href,
@@ -389,7 +393,7 @@ private resourceToIgnore(input: string): boolean {
     const customEvent: RUMEvent = {
       appKey: this.config.appKey,
       type,
-      timestamp: Date.now(),
+      timestamp: this.getTimeStamp(),
       sessionId: this.sessionId,
       userId: this.userId,
       pageUrl: window.location.href,

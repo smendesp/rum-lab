@@ -9,7 +9,6 @@ class Variables(TimeSeries):
     def __init__(self):
         super().__init__()
 
-
     def prepare_df(self, data_frame):
         data = {
             'event_type': data_frame['event_type'],
@@ -22,11 +21,9 @@ class Variables(TimeSeries):
             'time': data_frame['time'],
         }
 
-
         df = pd.DataFrame(data)
 
         return df
-
 
     def set_data(self, data_list: list):
         fields = [

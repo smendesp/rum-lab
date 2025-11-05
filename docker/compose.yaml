@@ -32,7 +32,6 @@ services:
       - SECRET_KEY=your-production-secret-key 
       - DB_DEFAULT_FORMAT_DATE=%Y-%m-%d %H:%M:%S 
       - WORKERS=2
-      - TS_ORIGIN='DATABASE'
 
       - INFLUXDB_URL=http://192.168.68.114:8181
       - INFLUXDB_DATABASE=rum_ingest
