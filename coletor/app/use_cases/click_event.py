@@ -1,6 +1,3 @@
-from multiprocessing import Process
-import time
-
 from app.services.time_series.click_event import ClickEvent
 
 

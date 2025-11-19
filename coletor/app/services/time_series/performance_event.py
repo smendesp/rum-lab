@@ -1,13 +1,14 @@
 from influxdb_client_3 import Point
 from app.services.time_series.time_series import TimeSeries
+from app.lib.utils import Utils
 
 
 class PerformanceEvent(TimeSeries):
     def __init__(self):
         super().__init__()
+        self.utils = Utils()
 
     def set_events(self, events: list):
-
         data_points: list = []
         fields: list = [
             'first_paint',
@@ -29,7 +30,7 @@ class PerformanceEvent(TimeSeries):
                         .tag('user_agent', event['user_agent'])
                         .tag('metric', field)
                         .field('value', int(event[field]))
-                        .time(self.get_timestamp(event['timestamp']))
+                        .time(self.utils.get_timestamp(event['timestamp']))
                     )
                     data_points.append(data_point)
 

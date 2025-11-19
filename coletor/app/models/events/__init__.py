@@ -6,8 +6,8 @@ from app.models.events.rum_performance_event import (
     RumPerformanceEventData,
 )
 from app.models.events.rum_webvitals_event import (
-    RumWebVitalsEvent,
-    RumWebVitalsEventData,
+    RumWebvitalsEvent,
+    RumWebvitalsEventData,
 )
 from app.models.events.rum_resource_event import (
     RumResourceEvent,

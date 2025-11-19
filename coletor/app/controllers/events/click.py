@@ -18,7 +18,7 @@ class ClickEventController:
 
         for event in data:
             if event['type'] != 'click':
-                raise f'Error: is not a click event'
+                raise ValueError(f'Error: is not a click event')
 
             rum_click_event_count = self.metrics.counter(
                 name='rum.click.events.count',

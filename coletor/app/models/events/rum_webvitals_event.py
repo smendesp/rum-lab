@@ -4,7 +4,7 @@ from app.models.events.rum_event import RumEvent
 
 
 # Todo: validar defaults
-class RumWebVitalsEventData(BaseModel):
+class RumWebvitalsEventData(BaseModel):
     id: str = Field(description='Web Vitals ID')
     name: str = Field(description='Web Vitals Name')
     value: float = Field(description='Web Vitals Value')
@@ -13,9 +13,9 @@ class RumWebVitalsEventData(BaseModel):
         return {'id': self.id, 'name': self.name, 'value': self.value}
 
 
-class RumWebVitalsEvent(RumEvent):
+class RumWebvitalsEvent(RumEvent):
     type: str = Field(default='web_vitals', description='Event Type')
-    data: RumWebVitalsEventData = Field()
+    data: RumWebvitalsEventData = Field()
 
     def to_dict(self) -> dict:
         return {

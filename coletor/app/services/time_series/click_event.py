@@ -9,9 +9,9 @@ from app.lib.utils import Utils
 class ClickEvent(TimeSeries):
     def __init__(self):
         super().__init__()
+        self.utils = Utils()
 
     def set_events(self, events: list):
-        utils = Utils()
         variables = Variables()
         data_points: list = []
         # variables_data: list = []
@@ -44,7 +44,7 @@ class ClickEvent(TimeSeries):
             'x': [data['x'] for data in events],
             'y': [data['y'] for data in events],
             'time': [
-                utils.get_timestamp(data['timestamp']) for data in events
+                self.utils.get_timestamp(data['timestamp']) for data in events
             ],
         }
 

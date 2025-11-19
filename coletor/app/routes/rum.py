@@ -3,50 +3,20 @@ from typing import Annotated
 import json
 
 from app.models.entities import AppKeyEntity
-from app.models.events import (
-    RumClickEvent,
-    RumClickEventData,
-    RumErrorEvent,
-    RumErrorEventData,
-    RumPerformanceEvent,
-    RumPerformanceEventData,
-    RumWebVitalsEvent,
-    RumWebVitalsEventData,
-    RumResourceEvent,
-    RumResourceEventData,
-)
-
 from app.controllers.rum import RumEventController
 from app.lib.logger import Logger
 from app.lib.custom_response import generate_json_response
-from app.lib.metrics import Metrics
 
-from app.services.time_series import (
-    ClickEvent,
-    WebVitalsEvent,
-    ErrorEvent,
-    ResourceEvent,
-    PerformanceEvent,
-    AppKeyData,
-)
 
-from app.use_cases.click_event import ClickEventUseCase
+from app.services.time_series import AppKeyData
 
-# from app.services.time_series import WebVitalsEvent
 
 log = Logger()
 router = APIRouter()
-metrics = Metrics()
-click_event = ClickEvent()
-web_vitals_event = WebVitalsEvent()
-error_event = ErrorEvent()
-resource_event = ResourceEvent()
-performance_event = PerformanceEvent()
 app_key_data = AppKeyData()
 
 
 @router.post('/v1/app-key')
-# async def user_account_add(data: Annotated[UserAccountModel, Body(embed=False)]):
 async def app_key(data: Annotated[list, Body(embed=False)]):
     try:
 
@@ -95,7 +65,6 @@ async def app_key(data: Annotated[list, Body(embed=False)]):
 
 
 @router.post('/v1/rum')
-# async def user_account_add(data: Annotated[UserAccountModel, Body(embed=False)]):
 async def rum(data: Annotated[list, Body(embed=False)]):
     try:
         rum_event_controller = RumEventController()

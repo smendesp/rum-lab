@@ -1,11 +1,13 @@
 from influxdb_client_3 import Point
 from app.services.time_series.time_series import TimeSeries
+from app.lib.utils import Utils
 
 
 class WebVitalsEvent(TimeSeries):
     def __init__(self):
         super().__init__()
-
+        self.utils = Utils()
+        
     def set_events(self, events: list):
 
         data_points: list = []
@@ -23,7 +25,7 @@ class WebVitalsEvent(TimeSeries):
                 .tag('id', event['id'])
                 .tag('name', event['name'])
                 .field('count', event['value'])
-                .time(self.get_timestamp(event['timestamp']))
+                .time(self.utils.get_timestamp(event['timestamp']))
             )
             data_points.append(data_point)
 

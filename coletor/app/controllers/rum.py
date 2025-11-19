@@ -8,8 +8,8 @@ from app.models.events import (
     RumErrorEventData,
     RumPerformanceEvent,
     RumPerformanceEventData,
-    RumWebVitalsEvent,
-    RumWebVitalsEventData,
+    RumWebvitalsEvent,
+    RumWebvitalsEventData,
     RumResourceEvent,
     RumResourceEventData,
 )
@@ -26,8 +26,8 @@ from app.services.time_series import (
     PerformanceEvent,
 )
 
-from app.controllers.events import ClickEventController
-from app.use_cases.click_event import ClickEventUseCase
+from app.controllers.events import ( ClickEventController, PerformanceEventController, WebvitalsEventController)
+
 
 
 class RumEventController:
@@ -47,30 +47,46 @@ class RumEventController:
                 self.log.logger.error('appKey is missing in the RUM data')
                 raise 'appKey is required'
 
-            click_event_controller = ClickEventController()
-
             group_by_event = defaultdict(list)
 
             for item in data:
                 group_by_event[item['type']].append(item)
 
             rum_event_click_list: list = group_by_event['click']
-            rum_event_web_vitals_list: list = group_by_event['web-vitals']
             rum_event_performance_list: list = group_by_event['performance']
+            rum_event_webvitals_list: list = group_by_event['web-vitals']
             rum_event_error_list: list = group_by_event['error']
             rum_event_resource_list: list = group_by_event['resource']
-
+                
             res = {
                 'click': len(rum_event_click_list),
                 'error': len(rum_event_error_list),
                 'resource': len(rum_event_resource_list),
                 'performance': len(rum_event_performance_list),
-                'web_vitals': len(rum_event_web_vitals_list),
+                'web-vitals': len(rum_event_webvitals_list),
             }
+            
+            if res['click'] > 0: 
+                click_event_controller = ClickEventController()
+                click_event_controller.set_events(data=rum_event_click_list)
+                
+            if res['performance'] > 0: 
+                performance_event_controller = PerformanceEventController()
+                performance_event_controller.set_events(data=rum_event_performance_list)
+                
+            if res['web-vitals'] > 0: 
+                webvitals_event_controller = WebvitalsEventController()
+                webvitals_event_controller.set_events(data=rum_event_webvitals_list)
+                    
+            if res['error'] > 0:             
+                ...
+                    
+            if res['resource'] > 0:                 
+                ...
 
-            click_event_controller.set_events(data=rum_event_click_list)
 
-            return rum_event_click_list
+            #return rum_event_click_list
+            return res        
 
             # for event in data:
 
@@ -292,7 +308,6 @@ class RumEventController:
             # )
             # self.resource_event.set_events(events=rum_event_resource_list)
 
-            # return res
 
         except Exception as e:
             raise e
