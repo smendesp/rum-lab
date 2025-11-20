@@ -42,7 +42,7 @@ class ClickEventController:
                 )
 
             except Exception as e:
-                raise f'Invalid RUM Click Event data: {e}'
+                raise ValueError(f'Invalid RUM Click Event data: {e}')
 
             rum_click_event_count.add(1, attributes=rum_click_event.to_dict())
             events.append(rum_click_event.to_dict())

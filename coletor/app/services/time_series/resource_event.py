@@ -26,7 +26,7 @@ class ResourceEvent(TimeSeries):
                 .tag('success', event['success'])
                 .tag('size', event['size'])
                 .field('count', 1)
-                .time(self.get_timestamp(event['timestamp']))
+                .time(self.utils.get_timestamp(event['timestamp']))
             )
             data_points.append(data_point)
 
@@ -39,4 +39,4 @@ class ResourceEvent(TimeSeries):
             self.log.logger.error(
                 f'Error writing error events to time series database: {e}'
             )
-            raise e
+            raise ValueError(e)

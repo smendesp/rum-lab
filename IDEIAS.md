@@ -10,7 +10,9 @@
 ### RUM AGENT 
  - Não zerar o buffer de envio quando falhar o envio para o coletor
  - Opção para gerar data na coleta do agents
-
+ - Tempo de tela
+ - metricas de agentes
+ 
 ### Coletor
  - Criar configuração para optar pela data do coletor ou do agent 
  - fazer o flush sumarizado para diminuir a granularidade, entender se é melhor fazer no coletor ou no agente

@@ -1,12 +1,10 @@
 from influxdb_client_3 import Point
 from app.services.time_series.time_series import TimeSeries
-from app.lib.utils import Utils
 
 
 class WebVitalsEvent(TimeSeries):
     def __init__(self):
         super().__init__()
-        self.utils = Utils()
         
     def set_events(self, events: list):
 
@@ -38,4 +36,4 @@ class WebVitalsEvent(TimeSeries):
             self.log.logger.error(
                 f'Error writing error events to time series database: {e}'
             )
-            raise e
+            raise ValueError(e)

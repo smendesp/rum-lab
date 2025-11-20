@@ -54,4 +54,4 @@ class Variables(TimeSeries):
             self.log.logger.error(
                 f'Error writing error events to time series database: {e}'
             )
-            raise e
+            raise ValueError(e)

@@ -6,6 +6,7 @@ class ErrorEvent(TimeSeries):
     def __init__(self):
         super().__init__()
 
+
     def set_events(self, events: list):
 
         data_points: list = []
@@ -15,7 +16,7 @@ class ErrorEvent(TimeSeries):
                 Point('error_event')
                 .tag('id', self.get_id())
                 .tag('app_key', event['app_key'])
-                .tag('event_type', event['event_type'])
+                .tag('event_type', event['type'])
                 .tag('session_id', event['session_id'])
                 .tag('user_id', event['user_id'])
                 .tag('page_url', event['page_url'])
@@ -26,7 +27,7 @@ class ErrorEvent(TimeSeries):
                 .tag('lineno', event['lineno'])
                 .tag('colno', event['colno'])
                 .field('count', 1)
-                .time(self.get_timestamp(event['timestamp']))
+                .time(self.utils.get_timestamp(event['timestamp']))
             )
             data_points.append(data_point)
 
@@ -39,4 +40,4 @@ class ErrorEvent(TimeSeries):
             self.log.logger.error(
                 f'Error writing error events to time series database: {e}'
             )
-            raise e
+            raise ValueError(e)

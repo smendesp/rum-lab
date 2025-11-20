@@ -41,7 +41,7 @@ class WebvitalsEventController:
                 )
 
             except Exception as e:
-                raise f'Invalid RUM Error Event data: {e}'
+                raise ValueError(f'Invalid RUM Error Event data: {e}')
 
             events.append(
                 rum_webvitals_event.to_dict()

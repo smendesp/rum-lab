@@ -43,7 +43,7 @@ class PerformanceEventController:
                 )
 
             except Exception as e:
-                raise f'Invalid RUM Error Event data: {e}'
+                raise ValueError(f'Invalid RUM Error Event data: {e}')
 
             events.append(
                 rum_performance_event.to_dict()
